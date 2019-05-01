@@ -1,0 +1,14 @@
+{
+  "name": "http-proxy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "s1": "node src/example-1.js",
+    "s2": "node src/example-2.js",
+    "s3": "node src/example-3.js",
+    "c": "node src/client.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
