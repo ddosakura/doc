@@ -24,8 +24,27 @@
 |Version |RFC    |revise |revise |
 |--------|-------|-------|-------|
 |HTTP/1.0|RFC1945|||
-|HTTP/1.1|RFC2068|RFC2616|RFC7290-7235|
+|HTTP/1.1|RFC2068|RFC2616|RFC7230-7235|
 |HTTP/2.0|RFC7540-7541|||
+
++ HTTP/1.0
+    + RFC 1945 Hypertext Transfer Protocol -- HTTP/1.0
++ HTTP/1.1 Main
+    + RFC 7230 Hypertext Transfer Protocol (HTTP/1.1): Message Syntax and Routing
+    + RFC 7231 Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content
+    + RFC 7232 Hypertext Transfer Protocol (HTTP/1.1): Conditional Requests
+    + RFC 7233 Hypertext Transfer Protocol (HTTP/1.1): Range Requests
+    + RFC 7234 Hypertext Transfer Protocol (HTTP/1.1): Caching
+    + RFC 7235 Hypertext Transfer Protocol (HTTP/1.1): Authentication
++ HTTP/1.1 Other
+    + RFC 2817 Upgrading to TLS Within HTTP/1.1
++ HTTP/2.0 Main
+    + RFC 7540 Hypertext Transfer Protocol Version 2 (HTTP/2)
+    + RFC 7541 HPACK: Header Compression for HTTP/2
++ HTTP/2.0 Other
+    + RFC 8164 Opportunistic Security for HTTP/2
+    + RFC 8336 The ORIGIN HTTP/2 Frame
+    + RFC 8441 Bootstrapping WebSockets with HTTP/2
 
 ### Related
 
@@ -35,79 +54,6 @@
 
 ## Note
 
-### URI、URL、URN
-
-+ URN 已成历史
-    > The term "Uniform Resource Name" (URN) has been used historically to refer to both URIs under the "urn" scheme [RFC2141], which are required to remain globally unique and persistent even when the resource ceases to exist or becomes unavailable, and to any other URI with the properties of a name.
-+ 建议使用通用术语 URI
-    > Future specifications and related documentation should
-   use the general term "URI" rather than the more restrictive terms
-   "URL" and "URN"
-
-+ Syntax Components
-```
-URI         = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
-hier-part   = "//" authority path-abempty
-              / path-absolute
-              / path-rootless
-              / path-empty
-
-# 协议类型
-scheme      = ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )
-# 认证(用户、地址、端口)
-authority   = [ userinfo "@" ] host [ ":" port ]
-# 带层次的文件路径
-path        = path-abempty    ; begins with "/" or is empty
-            / path-absolute   ; begins with "/" but not "//"
-            / path-noscheme   ; begins with a non-colon segment
-            / path-rootless   ; begins with a segment
-            / path-empty      ; zero characters
-# 查询字符串
-query       = *( pchar / "/" / "?" )
-# 片段标识符
-fragment    = *( pchar / "/" / "?" )
-```
-
-         foo://example.com:8042/over/there?name=ferret#nose
-         \_/   \______________/\_________/ \_________/ \__/
-          |           |            |            |        |
-       scheme     authority       path        query   fragment
-          |   _____________________|__
-         / \ /                        \
-         urn:example:animal:ferret:nose
-
-+ [IANA - URI Schemes](https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml)
-
-+ URI Syntax: `^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?`
-    + [Graph](https://regexper.com/#%5E%28%28%5B%5E%3A%2F%3F%23%5D%2B%29%3A%29%3F%28%5C%2F%5C%2F%28%5B%5E%2F%3F%23%5D*%29%29%3F%28%5B%5E%3F%23%5D*%29%28%5C%3F%28%5B%5E%23%5D*%29%29%3F%28%23%28.*%29%29%3F)
-    + $1$3$5$6$8
-        + $1 = $2:
-        + $3 = //$4
-        + $6 = ?$7
-        + $8 = #$9
-    + Meaning
-        + scheme    = $2 `([^:/?#]+)`   (Optional)
-        + authority = $4 `([^/?#]*)`    (Optional)
-        + path      = $5 `([^?#]*)`
-        + query     = $7 `([^#]*)`      (Optional)
-        + fragment  = $9 `(.*)`         (Optional)
-
-#### IPv6
-
-```
-IPv6address =                            6( h16 ":" ) ls32
-            /                       "::" 5( h16 ":" ) ls32
-            / [               h16 ] "::" 4( h16 ":" ) ls32
-            / [ *1( h16 ":" ) h16 ] "::" 3( h16 ":" ) ls32
-            / [ *2( h16 ":" ) h16 ] "::" 2( h16 ":" ) ls32
-            / [ *3( h16 ":" ) h16 ] "::"    h16 ":"   ls32
-            / [ *4( h16 ":" ) h16 ] "::"              ls32
-            / [ *5( h16 ":" ) h16 ] "::"              h16
-            / [ *6( h16 ":" ) h16 ] "::"
-ls32        = ( h16 ":" h16 ) / IPv4address
-            ; least-significant 32 bits of address
-h16         = 1*4HEXDIG
-            ; 16 bits of address represented in hexadecimal
-```
-
-+ See more in [Related Link - IP]
++ [URI、URL、URN](./URI.md)
++ [HTTP1.1](./HTTP1.md)
++ [HTTP2.0](./HTTP2.md)
