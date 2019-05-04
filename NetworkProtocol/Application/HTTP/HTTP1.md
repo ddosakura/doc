@@ -46,3 +46,20 @@ Accept: */*
     + [参考](https://imququ.com/post/web-proxy.html)
     + HTTP 默认走普通代理 `RFC 7230 - HTTP/1.1: Message Syntax and Routing`
     + HTTPS 走隧道代理 `RFC 7231 - HTTP/1.1: Semantics and Content`
+    + 请求样例
+    > ```
+    > CONNECT server.example.com:80 HTTP/1.1
+    > Host: server.example.com:80
+    > ```
+    + 关于返回码
+    > CONNECT is intended only for use in requests to a proxy.  An origin
+    > server that receives a CONNECT request for itself MAY respond with a
+    > 2xx (Successful) status code to indicate that a connection is
+    > established.
+    + 关于响应头
+    > A server MUST NOT send any Transfer-Encoding or Content-Length header
+    > fields in a 2xx (Successful) response to CONNECT.  A client MUST
+    > ignore any Content-Length or Transfer-Encoding header fields received
+    > in a successful response to CONNECT.
+    + 禁止缓存
+    > Responses to the CONNECT method are not cacheable.
