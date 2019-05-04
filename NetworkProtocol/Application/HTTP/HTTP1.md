@@ -47,6 +47,9 @@ Accept: */*
     + HTTP 默认走普通代理 `RFC 7230 - HTTP/1.1: Message Syntax and Routing`
     + HTTPS 走隧道代理 `RFC 7231 - HTTP/1.1: Semantics and Content`
     + 请求样例
+    > the request-target
+   consists of only the host name and port number of the tunnel
+   destination, separated by a colon.
     > ```
     > CONNECT server.example.com:80 HTTP/1.1
     > Host: server.example.com:80
