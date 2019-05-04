@@ -33,11 +33,22 @@ $ curl -v baidu.com
 #### About Method
 
 1. OPTIONS 请求时可用 `*` 代替 URI
-```
-OPTIONS * HTTP/1.1
-Host: baidu.com
-Accept: */*
-```
+    > ```
+    > OPTIONS * HTTP/1.1
+    > Host: baidu.com
+    > Accept: */*
+    > ```
+    > An OPTIONS request with an asterisk (`*`) as the request-target
+    > (Section 5.3 of [RFC7230]) applies to the server in general rather
+    > than to a specific resource.  Since a server's communication options
+    > typically depend on the resource, the `*` request is only useful as a
+    > "ping" or "no-op" type of method; it does nothing beyond allowing the
+    > client to test the capabilities of the server.  For example, this can
+    > be used to test a proxy for HTTP/1.1 conformance (or lack thereof).
+    > 
+    > If the request-target is not an asterisk, the OPTIONS request applies
+    > to the options that are available when communicating with the target
+    > resource.
 
 2. TRACE 仅用于调试，容易引发 XST(Cross-Site Tracing, 跨站追踪) 攻击
     > XST 攻击是利用服务器的调试方法 Trace 进行用户信息收集的一种攻击，因为 Trace 方法是会导致服务器原样返回客户端发送的内容（Cookie，HTTP 认证信息等）。
@@ -48,8 +59,8 @@ Accept: */*
     + HTTPS 走隧道代理 `RFC 7231 - HTTP/1.1: Semantics and Content`
     + 请求样例
     > the request-target
-   consists of only the host name and port number of the tunnel
-   destination, separated by a colon.
+    > consists of only the host name and port number of the tunnel
+    > destination, separated by a colon.
     > ```
     > CONNECT server.example.com:80 HTTP/1.1
     > Host: server.example.com:80
