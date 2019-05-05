@@ -16,6 +16,7 @@
 ### Example
 
 + [Playground](https://github.com/ddosakura/NPE/http)
++ [Old Note](./http-proxy)
 
 ## Document
 
@@ -57,3 +58,18 @@
 + [URI、URL、URN](./URI.md)
 + [HTTP1.1](./HTTP1.md)
 + [HTTP2.0](./HTTP2.md)
+
+### About HTTP/1.0 & HTTP/1.1
+
+| Method |1.0|1.1|
+|--------|---|---|
+|GET     | o | o |
+|POST    | o | o |
+|PUT     | o | o |
+|DELETE  | o | o |
+|HEAD    | o | o |
+|OPTIONS |   | o |
+|CONNECT |   | o |
+|TRACE   |   | o |
+|LINK    | o |   |
+|UNLINK  | o |   |

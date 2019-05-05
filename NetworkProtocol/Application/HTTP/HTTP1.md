@@ -77,3 +77,156 @@ $ curl -v baidu.com
     > in a successful response to CONNECT.
     + 禁止缓存
     > Responses to the CONNECT method are not cacheable.
+
+#### Keep-Alive & Pipelining (持久连接 & 管线化/流水线技术)
+
++ 早期版本：一次 HTTP 请求断开一次 TCP
++ HTTP/1.1 默认 Keep-Alive (请求与响应复用 TCP 连接) 
+    > TODO: CHECK  
+    > 关于 TCP 四次挥手时 HTTP 请求与响应的猜想  
+    > HTTP 一次请求一次响应，四次挥手间应该没有数据传输  
+    > (不包括 WebSocket)
++ Pipelining (`请求II`不等待`响应I`)
+
+TODO: [ ] Play
+
+#### Cookie/Session
+
++ 初次响应头 `Set-Cookie: sid=xxx; path=/`
++ 二次请求头 `Cookie: sid=xxx`
+
+#### HTTP Packet (报文)
+
++ 首部
+    + 请求行/状态行
+    + 首部字段
+        + 请求/响应 首部字段
+        + 通用 首部字段
+        + 实体 首部字段
++ `\r\n` (CR LF) [`0x0d` `0x0a`]
++ 主体(可选)
+
+##### Header
+
+Go 中 Header 的定义:
+
+```go
+// A Header represents the key-value pairs in an HTTP header.
+//
+// The keys should be in canonical form, as returned by
+// CanonicalHeaderKey.
+type Header map[string][]string
+```
+
++ 值是一个数组，TODO: 疑似使用 `;` 分隔
+    > e.g `Set-Cookie: sid=xxx; path=/`
+
+##### Encoding (编码)
+
++ [参考链接](https://blog.csdn.net/u014569188/article/details/78912469)
++ TODO: [ ] Play
+
+###### Content-Encoding (内容编码)
+
++ 通常用于对实体内容进行压缩编码，目的是优化传输
++ jpg / png 这类文件一般不开启，因为图片格式已经是高度压缩过的，再压一遍没什么效果不说还浪费 CPU
+
+| 编码 | 描述 |
+|---|---|
+|   gzip   | GNU ZIP |
+| compress | UNIX 系统标准 |
+| deflate  | zlib |
+| identity | 不进行编码 |
+
+###### Transfer-Encoding (传输编码)
+
++ `Transfer-Encoding: chunked` -> 分块传输
++ 此时不再使用 `Content-Length`
+
+```js
+require('net').createServer(function(sock) {
+    sock.on('data', function(data) {
+        sock.write('HTTP/1.1 200 OK\r\n');
+        sock.write('Transfer-Encoding: chunked\r\n');
+        sock.write('\r\n');
+
+        // 块 I
+        sock.write('b\r\n'); // Size-of-Block (十六进制)
+        sock.write('01234567890\r\n');
+
+        // 块 II
+        sock.write('5\r\n');
+        sock.write('12345\r\n');
+
+        // 块 III
+        sock.write('0\r\n');
+        sock.write('\r\n');
+    });
+}).listen(9090, '127.0.0.1');
+```
+
+##### MIME 机制
+
++ TODO: [ ] Play
+
+###### Multipart 多部分对象集合 [TODO: READ RFC 2046]
+
+分类:
+
++ `multipart/form-data` -> 表单文件上传   {Request}
++ `multipart/byteranges` -> Code=206时  {Response} -> 见范围请求-多重范围
+
+> + 每部分有各自的首部
+> + 可嵌套使用
+> + 使用 `boundary` 字符串划分部分
+>
+> Example:
+>
+>
+> Content-Type: multipart/...; boundary=xxx  
+> `\r\n`  
+> --xxx  
+> 首部  
+> `\r\n`  
+> 可选主体  
+> --xxx  
+> 首部  
+> `\r\n`  
+> 可选主体  
+> --xxx-- # 最后有额外的 `--`  
+
+##### Range Requests (范围请求)
+
+    TODO: 用途：下载时的可恢复机制 => 断点续传
+
++ 请求
+    + 首部字段
+        > ```
+        > Range: bytes=5001-10000
+        > Range: bytes=5001-                # 一直到结束
+        > Range: bytes=-3000, 5000-7000     # 多重范围
+        > ```
++ 响应
+    + 状态码
+        + 正常时: 206
+        + 无法响应时: 200 -> 此时传完整的实体内容
+    + 首部字段
+        + `Content-Range: bytes 500-999/8000`
+        + 多重范围时 `Content-Type: multipart/byteranges` (每部分单独使用 `Content-Range`)
+
+##### Accept (内容协商)
+
+    判断基准-请求首部字段
+
+    + Accept
+    + Accept-Charset
+    + Accept-Encoding
+    + Accept-Language
+    + Content-Language
+
+三种内容协商手段
++ 服务器端驱动 (自动)
++ 客户端驱动 (手动选择)
++ 透明协商 (混合 C&S 驱动)
+
+#### Status Code (状态码)
