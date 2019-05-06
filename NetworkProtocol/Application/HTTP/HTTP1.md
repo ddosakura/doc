@@ -230,3 +230,119 @@ require('net').createServer(function(sock) {
 + 透明协商 (混合 C&S 驱动)
 
 #### Status Code (状态码)
+
+|Code|Type|说明|
+|---|---|---|
+|   1xx   | Informational | 消息(处理中) |
+|   2xx   | Success       | 成功(正常处理完毕) |
+|   3xx   | Redirection   | 重定向(需要附加操作) |
+|   4xx   | Client Error  | 请求错误(无法处理请求) |
+| 5xx/6xx | Server Error  | 服务器错误(处理请求出错) |
+
+TODO: 以下列表中列入常用状态码、专项说明(e.g. WebDAV)的状态码需要逐步移除
+
++ 100 Continue
++ 101 Switching Protocols
++ 102 Processing
+
++ 201 Created
++ 202 Accepted
++ 203 Non-Authoritative Information
++ 205 Reset Content
++ 207 Multi-Status
+
++ 300 Multiple Choices
++ 305 Use Proxy
++ ~~306 Switch Proxy~~ (废弃)
+
++ 402 Payment Required
++ 405 Method Not Allowed
++ 406 Not Acceptable
++ 407 Proxy Authentication Required
++ 408 Request Timeout
++ 409 Conflict
++ 410 Gone
++ 411 Length Required
++ 412 Precondition Failed
++ 413 Request Entity Too Large
++ 414 Request-URI Too Long
++ 415 Unsupported Media Type
++ 416 Requested Range Not Satisfiable
++ 417 Expectation Failed
++ 418 I'm a teapot
++ 421 Too Many Connections
++ 422 Unprocessable Entity
++ 423 Locked
++ 424 Failed Dependency
++ 425 Unordered Collection
++ 426 Upgrade Required
++ 449 Retry With
++ 451 Unavailable For Legal Reasons
+
++ 501 Not Implemented
++ 502 Bad Gateway
++ 504 Gateway Timeout
++ 505 HTTP Version Not Supported
++ 506 Variant Also Negotiates
++ 507 Insufficient Storage
++ 509 Bandwidth Limit Exceeded
++ 510 Not Extended
++ 600 Unparseable Response Headers
+
+##### 常用状态码
+
++ 1xx
++ 2xx
+    + 200 OK
+        1. 已正常处理
+        1. `CONNECT 隧道` 建立完成
+    + 204 No Content
+        + 返回报文**不含**实体主体
+        + *(浏览器显示页面不更新)*
+    + 206 Partial Content
+        + 见范围请求
++ 3xx
+    > 重定向相关Header
+    >
+    > `Location: <URI>`
+    + 301 Moved Permanently
+        + 永久重定向
+        + *(若存在该URI的书签，浏览器重新保存该书签)*
+        + 常见重定向: `http://.../a -> http://.../a/`
+        + *(标准上不改请求方法)*
+    + 302 Move Temporarily
+        + 临时重定向
+        + *(标准上不改请求方法)*
+        + *(浏览器可能将 302 视为 303)*
+    + 303 See Other
+        + 临时重定向
+        + 使用 `GET` 向新 URI 发起请求
+    + 304 Not Modified
+        + 对象: 含 `If-*` 这类 Header 的 GET 请求
+        + 返回报文**不含**主体
+    + 307 Temporary Redirect
+        + 临时重定向
+        + 严格按照浏览器标准，不会从 POST 变为 GET
++ 4xx
+    + 400 Bad Request
+        + 请求报文中含有语法错误
+        + *(浏览器按 200 OK 时一样对待该状态)*
+    + 401 Unauthorized
+        + 未认证/认证失败(BASIC/DIGEST)
+        + 响应应包含 `WWW-Authenticate` 头
+    + 403 Forbidden
+        + 拒绝访问(原因不必要说明)
+        + 常见于权限拦截
+    + 404 Not Found
+        + 找不到资源
++ 5xx
+    + 500 Internal Server Error
+        + 执行请求时发生了错误
+        + 常见于 bug
+    + 503 Service Unavailable
+        + 服务不可用
+        + 常见于服务器负载过大/正在维护
+        > 相关Header
+        >
+        > `Retry-After: <http-date>`  
+        > `Retry-After: <delay-seconds>`  
