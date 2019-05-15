@@ -1,6 +1,6 @@
 # TCP
 
-## Note
+## Content
 
     Reliable "Byte Stream Service"
 

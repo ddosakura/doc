@@ -53,7 +53,7 @@
 |---|---|---|
 |URI|RFC2396|[RFC3986](https://www.rfc-editor.org/rfc/rfc3986.txt)|
 
-## Note
+## Content
 
 + [URI、URL、URN](./URI.md)
 + [HTTP1.1](./HTTP1.md)

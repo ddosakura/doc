@@ -82,13 +82,13 @@ $ curl -v baidu.com
 
 + 早期版本：一次 HTTP 请求断开一次 TCP
 + HTTP/1.1 默认 Keep-Alive (请求与响应复用 TCP 连接) 
-    > TODO: CHECK  
+    > // TODO: CHECK  
     > 关于 TCP 四次挥手时 HTTP 请求与响应的猜想  
     > HTTP 一次请求一次响应，四次挥手间应该没有数据传输  
     > (不包括 WebSocket)
 + Pipelining (`请求II`不等待`响应I`)
 
-TODO: [ ] Play
+// TODO: [ ] Play
 
 #### Cookie/Session
 
@@ -118,13 +118,13 @@ Go 中 Header 的定义:
 type Header map[string][]string
 ```
 
-+ 值是一个数组，TODO: 疑似使用 `;` 分隔
++ 值是一个数组，// TODO: 疑似使用 `;` 分隔
     > e.g `Set-Cookie: sid=xxx; path=/`
 
 ##### Encoding (编码)
 
 + [参考链接](https://blog.csdn.net/u014569188/article/details/78912469)
-+ TODO: [ ] Play
++ // TODO: [ ] Play
 
 ###### Content-Encoding (内容编码)
 
@@ -167,9 +167,9 @@ require('net').createServer(function(sock) {
 
 ##### MIME 机制
 
-+ TODO: [ ] Play
++ // TODO: [ ] Play
 
-###### Multipart 多部分对象集合 [TODO: READ RFC 2046]
+###### Multipart 多部分对象集合 [// TODO: READ RFC 2046]
 
 分类:
 
@@ -197,7 +197,7 @@ require('net').createServer(function(sock) {
 
 ##### Range Requests (范围请求)
 
-    TODO: 用途：下载时的可恢复机制 => 断点续传
+    // TODO: 用途：下载时的可恢复机制 => 断点续传
 
 + 请求
     + 首部字段
@@ -239,7 +239,7 @@ require('net').createServer(function(sock) {
 |   4xx   | Client Error  | 请求错误(无法处理请求) |
 | 5xx/6xx | Server Error  | 服务器错误(处理请求出错) |
 
-TODO: 以下列表中列入常用状态码、专项说明(e.g. WebDAV)的状态码需要逐步移除
+// TODO: 以下列表中列入常用状态码、专项说明(e.g. WebDAV)的状态码需要逐步移除
 
 + 100 Continue
 + 101 Switching Protocols
@@ -346,3 +346,5 @@ TODO: 以下列表中列入常用状态码、专项说明(e.g. WebDAV)的状态�
         >
         > `Retry-After: <http-date>`  
         > `Retry-After: <delay-seconds>`  
+
+#### Header 首部字段
